@@ -1,17 +1,19 @@
 package training
 
+import training.datatypes._
+
 object Program extends App {
 
-  def getBalanceBank1: Int = 100
+  def getBalanceBank1: Maybe[Int] = Yes(100)
 
-  def getBalanceBank2: Int = 80
+  def getBalanceBank2: Maybe[Int] = Yes(80)
 
-  def balance: Int = {
+  def balance: Maybe[Int] = {
 
-    val b1: Int = getBalanceBank1
-    val b2: Int = getBalanceBank2
+    val b1: Maybe[Int] = getBalanceBank1
+    val b2: Maybe[Int] = getBalanceBank2
 
-    b1 + b2
+    b1 + b2 //It will fail
   }
 
 
