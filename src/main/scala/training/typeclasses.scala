@@ -1,0 +1,6 @@
+package training
+
+object typeclasses {
+
+
+}

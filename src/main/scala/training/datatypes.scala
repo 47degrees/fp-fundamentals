@@ -1,0 +1,5 @@
+package training
+
+object datatypes {
+
+}
