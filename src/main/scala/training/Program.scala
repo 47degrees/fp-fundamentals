@@ -14,7 +14,7 @@ object Program extends App {
     val b1: Maybe[Int] = getBalanceBank1
     val b2: Maybe[Int] = getBalanceBank2
 
-    maybeCombinator.combine(b1, b2)
+    b1.combine(b2)
   }
 
 
