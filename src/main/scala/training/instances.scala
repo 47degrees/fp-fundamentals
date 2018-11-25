@@ -20,5 +20,12 @@ object instances {
 
   }
 
+  class MaybeTransformer extends Transformer[Maybe] {
+    override def map[A, B](fa: Maybe[A], f: A => B): Maybe[B] = fa match {
+      case Yes(a) => Maybe(f(a))
+      case No => No
+    }
+  }
+
 
 }
