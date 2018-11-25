@@ -1,6 +1,7 @@
 package training
 
 import training.datatypes._
+import training.implicits._
 
 object Program extends App {
 
@@ -13,7 +14,7 @@ object Program extends App {
     val b1: Maybe[Int] = getBalanceBank1
     val b2: Maybe[Int] = getBalanceBank2
 
-    b1 + b2 //It will fail
+    maybeCombinator.combine(b1, b2)
   }
 
 
