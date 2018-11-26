@@ -27,5 +27,12 @@ object instances {
     }
   }
 
+  class MaybeTransformer2 extends MaybeTransformer with Transformer2[Maybe]  {
+    override def ap[A, B](fa: Maybe[A], ff: Maybe[A => B]): Maybe[B] = (ff, fa) match {
+      case (Yes(f), Yes(a)) => Maybe(f(a))
+      case (_, _) => No
+    }
+  }
+
 
 }

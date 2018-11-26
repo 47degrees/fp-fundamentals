@@ -12,6 +12,8 @@ object implicits {
 
   implicit def maybeTransformer: Transformer[Maybe] = new MaybeTransformer
 
+  implicit def maybeTransformer2: Transformer2[Maybe] = new MaybeTransformer2
+
   //Syntax
 
   implicit class CombinatorSyntax[A](self: Maybe[A]) {
