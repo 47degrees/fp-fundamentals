@@ -12,19 +12,17 @@ object Program extends App {
 
   def getBalanceBank2: Maybe[Int] = Yes(80)
 
+  val moneyInPocket: Int = 20
+
   val b1: Maybe[Int] = getBalanceBank1.map(_.balance)
   val b2: Maybe[Int] = getBalanceBank2
+  val p: Maybe[Int] = moneyInPocket.pure
 
-  def balance: Maybe[Int] = b1.combine(b2)
-
-  def statement: Maybe[Statement] =
-    maybeTransformer2.map2(b1, b2, {(a: Int, b: Int) => Statement(a + b > 1000, 2) })
-
+  def balance: Maybe[Int] = b1.combine(b2).combine(p)
 
 
   //EDGE OF THE WORLD
   println(balance)
-  println(statement)
 
 }
 

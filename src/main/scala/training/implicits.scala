@@ -14,6 +14,8 @@ object implicits {
 
   implicit def maybeTransformer2: Transformer2[Maybe] = new MaybeTransformer2
 
+  implicit def maybeLifter: Lifter[Maybe] = new MaybeLifter
+
   //Syntax
 
   implicit class CombinatorSyntax[A](self: Maybe[A]) {
@@ -22,6 +24,10 @@ object implicits {
 
   implicit class TransformerSyntax[A](self: Maybe[A])(implicit ev: Transformer[Maybe]){
     def map[B](f: A => B): Maybe[B] = ev.map(self, f)
+  }
+
+  implicit class LifterSyntax[A](self: A) {
+    def pure[F[_]](implicit ev: Lifter[F]): F[A] = ev.pure(self)
   }
 
 }

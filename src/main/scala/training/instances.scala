@@ -34,5 +34,9 @@ object instances {
     }
   }
 
+  class MaybeLifter extends Lifter[Maybe] {
+    override def pure[A](a: A): Maybe[A] = Maybe(a)
+  }
+
 
 }
