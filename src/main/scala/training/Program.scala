@@ -16,12 +16,12 @@ object Program extends App {
 
   val moneyInPocket: Int = 20
 
-  val c: Maybe[String] = getBank1Credentials
-  val b1: Maybe[Int] = getBank1Credentials.flatMap(cred => getBalanceBank1(cred).map(_.balance))
-  val b2: Maybe[Int] = getBalanceBank2
-  val p: Maybe[Int] = moneyInPocket.pure
-
-  def balance: Maybe[Int] = b1.combine(b2).combine(p)
+  def balance: Maybe[Int] = for {
+    c <- getBank1Credentials
+    b1 <- getBalanceBank1(c).map(_.balance)
+    b2 <- getBalanceBank2
+    p <- moneyInPocket.pure
+  } yield b1 + b2 + p
 
 
   //EDGE OF THE WORLD
