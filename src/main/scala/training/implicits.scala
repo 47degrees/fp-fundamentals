@@ -16,6 +16,8 @@ object implicits {
 
   implicit def maybeLifter: Lifter[Maybe] = new MaybeLifter
 
+  implicit def maybeFlattener: Flattener[Maybe] = new MaybeFlattener
+
   //Syntax
 
   implicit class CombinatorSyntax[A](self: Maybe[A]) {
@@ -28,6 +30,10 @@ object implicits {
 
   implicit class LifterSyntax[A](self: A) {
     def pure[F[_]](implicit ev: Lifter[F]): F[A] = ev.pure(self)
+  }
+
+  implicit class FlattenerSyntax[A](self: Maybe[A])(implicit ev: Flattener[Maybe]){
+    def flatMap[B](f: A => Maybe[B]): Maybe[B] = ev.flatMap(self, f)
   }
 
 }

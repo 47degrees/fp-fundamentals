@@ -25,5 +25,9 @@ object typeclasses {
     def pure[A](a: A): F[A]
   }
 
+  trait Flattener[F[_]]{
+    def flatMap[A, B](fa: F[A], f: A => F[B]): F[B]
+  }
+
 
 }

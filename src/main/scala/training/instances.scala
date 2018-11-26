@@ -38,5 +38,12 @@ object instances {
     override def pure[A](a: A): Maybe[A] = Maybe(a)
   }
 
+  class MaybeFlattener extends Flattener[Maybe] {
+    override def flatMap[A, B](fa: Maybe[A], f: A => Maybe[B]): Maybe[B] = fa match {
+      case Yes(a) => f(a)
+      case No => No
+    }
+  }
+
 
 }
