@@ -54,11 +54,53 @@ extension Maybe: CustomStringConvertible {
 
 // Typeclasses
 
-
+protocol Combinator {
+    associatedtype A
+    
+    func combine(_ x: A, _ y: A) -> A
+}
 
 // Instances
 
+class IntCombinator: Combinator {
+    typealias A = Int
+    
+    func combine(_ x: Int, _ y: Int) -> Int {
+        return x + y
+    }
+}
 
+extension Int {
+    static var combinator: IntCombinator {
+        return IntCombinator()
+    }
+}
+
+class MaybeCombinator<V, CV>: Combinator where CV: Combinator, CV.A == V {
+    typealias A = Maybe<V>
+    
+    let combinator: CV
+    
+    init(_ combinator: CV) {
+        self.combinator = combinator
+    }
+    
+    func combine(_ x: Maybe<V>, _ y: Maybe<V>) -> Maybe<V> {
+        return x.fold(
+            { y },
+            { xx in y.fold(
+                { x },
+                { yy in Maybe.yes(combinator.combine(xx, yy))
+            })
+        })
+    }
+}
+
+extension Maybe {
+    static func combinator<CV>(_ cv: CV) -> MaybeCombinator<A, CV> where CV: Combinator, CV.A == A {
+        return MaybeCombinator(cv)
+    }
+}
 
 // Program
 
@@ -70,7 +112,7 @@ class Program {
         let b1: Maybe<Int> = getBalanceBank1
         let b2: Maybe<Int> = getBalanceBank2
         
-        return b1 + b2 // It won't compile
+        return Maybe.combinator(Int.combinator).combine(b1, b2)
     }
     
     func run() {
