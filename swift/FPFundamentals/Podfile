@@ -1,0 +1,5 @@
+target 'FPFundamentals' do
+  use_frameworks!
+
+  pod "Bow", "~> 0.3.0"
+end
