@@ -80,6 +80,12 @@ extension Transformer2 {
     }
 }
 
+protocol Lifter {
+    associatedtype F
+    
+    func pure<A>(_ a: A) -> Kind<F, A>
+}
+
 // Instances
 
 class IntCombinator: Combinator {
@@ -134,6 +140,14 @@ class MaybeTransformer2: MaybeTransformer, Transformer2 {
     }
 }
 
+class MaybeLifter: Lifter {
+    typealias F = ForMaybe
+    
+    func pure<A>(_ a: A) -> Kind<ForMaybe, A> {
+        return Maybe<A>.yes(a)
+    }
+}
+
 extension Maybe {
     static func combinator<CV>(_ cv: CV) -> MaybeCombinator<A, CV> where CV: Combinator, CV.A == A {
         return MaybeCombinator(cv)
@@ -145,6 +159,10 @@ extension Maybe {
     
     static func transformer2() -> MaybeTransformer2 {
         return MaybeTransformer2()
+    }
+    
+    static func lifter() -> MaybeLifter {
+        return MaybeLifter()
     }
 }
 
@@ -161,6 +179,7 @@ struct Statement {
 }
 
 class Program {
+    let moneyInPocket: Int = 20
     let getBalanceBank1: Maybe<Account> = .yes(Account(id: "a1", balance: 100))
     let getBalanceBank2: Maybe<Int> = .yes(80)
     
@@ -170,8 +189,13 @@ class Program {
     
     var b2: Maybe<Int> { return self.getBalanceBank2 }
     
+    var p: Maybe<Int> {
+        return Maybe<Any>.lifter().pure(moneyInPocket).fix()
+    }
+    
     var balance: Maybe<Int> {
-        return Maybe.combinator(Int.combinator).combine(b1, b2)
+        let combinator = Maybe.combinator(Int.combinator)
+        return combinator.combine(combinator.combine(b1, b2), p)
     }
     
     var statement: Maybe<Statement> {
