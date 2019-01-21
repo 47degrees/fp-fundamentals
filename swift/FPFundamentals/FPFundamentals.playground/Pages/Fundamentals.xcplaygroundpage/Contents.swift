@@ -60,6 +60,12 @@ protocol Combinator {
     func combine(_ x: A, _ y: A) -> A
 }
 
+protocol Transformer {
+    associatedtype F
+    
+    func map<A, B>(_ fa: Kind<F, A>, _ f: @escaping (A) -> B) -> Kind<F, B>
+}
+
 // Instances
 
 class IntCombinator: Combinator {
@@ -96,20 +102,38 @@ class MaybeCombinator<V, CV>: Combinator where CV: Combinator, CV.A == V {
     }
 }
 
+class MaybeTransformer: Transformer {
+    typealias F = ForMaybe
+    
+    func map<A, B>(_ fa: Kind<ForMaybe, A>, _ f: @escaping (A) -> B) -> Kind<ForMaybe, B> {
+        return fa.fix().fold({ Maybe<B>.no() },
+                             { a in Maybe<B>.yes(f(a)) })
+    }
+}
+
 extension Maybe {
     static func combinator<CV>(_ cv: CV) -> MaybeCombinator<A, CV> where CV: Combinator, CV.A == A {
         return MaybeCombinator(cv)
+    }
+    
+    static func transformer() -> MaybeTransformer {
+        return MaybeTransformer()
     }
 }
 
 // Program
 
+struct Account {
+    let id: String
+    let balance: Int
+}
+
 class Program {
-    let getBalanceBank1: Maybe<Int> = .yes(100)
+    let getBalanceBank1: Maybe<Account> = .yes(Account(id: "a1", balance: 100))
     let getBalanceBank2: Maybe<Int> = .yes(80)
     
     var balance: Maybe<Int> {
-        let b1: Maybe<Int> = getBalanceBank1
+        let b1: Maybe<Int> = Maybe<Any>.transformer().map(getBalanceBank1, { acc in acc.balance }).fix()
         let b2: Maybe<Int> = getBalanceBank2
         
         return Maybe.combinator(Int.combinator).combine(b1, b2)
