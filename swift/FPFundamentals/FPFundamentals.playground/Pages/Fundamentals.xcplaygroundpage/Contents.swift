@@ -86,6 +86,12 @@ protocol Lifter {
     func pure<A>(_ a: A) -> Kind<F, A>
 }
 
+protocol Flattener {
+    associatedtype F
+    
+    func flatMap<A, B>(_ fa: Kind<F, A>, _ f: @escaping (A) -> Kind<F, B>) -> Kind<F, B>
+}
+
 // Instances
 
 class IntCombinator: Combinator {
@@ -148,6 +154,14 @@ class MaybeLifter: Lifter {
     }
 }
 
+class MaybeFlattener: Flattener {
+    typealias F = ForMaybe
+    
+    func flatMap<A, B>(_ fa: Kind<ForMaybe, A>, _ f: @escaping (A) -> Kind<ForMaybe, B>) -> Kind<ForMaybe, B> {
+        return fa.fix().fold({ Maybe<B>.no() }, f)
+    }
+}
+
 extension Maybe {
     static func combinator<CV>(_ cv: CV) -> MaybeCombinator<A, CV> where CV: Combinator, CV.A == A {
         return MaybeCombinator(cv)
@@ -164,6 +178,10 @@ extension Maybe {
     static func lifter() -> MaybeLifter {
         return MaybeLifter()
     }
+    
+    static func flattener() -> MaybeFlattener {
+        return MaybeFlattener()
+    }
 }
 
 // Program
@@ -179,12 +197,19 @@ struct Statement {
 }
 
 class Program {
+    let getBank1Credentials: Maybe<String> = .yes("MyUser_Password")
     let moneyInPocket: Int = 20
-    let getBalanceBank1: Maybe<Account> = .yes(Account(id: "a1", balance: 100))
+    
+    func getBalanceBank1(credentials: String) -> Maybe<Account> {
+        return .yes(Account(id: "a1", balance: 100))
+    }
+    
     let getBalanceBank2: Maybe<Int> = .yes(80)
     
     var b1: Maybe<Int> {
-        return Maybe<Any>.transformer().map(getBalanceBank1, { acc in acc.balance }).fix()
+        return Maybe<Any>.flattener().flatMap(self.getBank1Credentials, { credentials in
+            Maybe<Any>.transformer().map(self.getBalanceBank1(credentials: credentials), { acc in acc.balance }).fix()
+        }).fix()
     }
     
     var b2: Maybe<Int> { return self.getBalanceBank2 }
