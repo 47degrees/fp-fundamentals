@@ -1,7 +1,10 @@
 
 // Data types
 
-
+enum Maybe<A> {
+    case yes(A)
+    case no
+}
 
 // Typeclasses
 
@@ -14,12 +17,12 @@
 // Program
 
 class Program {
-    let getBalanceBank1: Int = 100
-    let getBalanceBank2: Int = 80
+    let getBalanceBank1: Maybe<Int> = .yes(100)
+    let getBalanceBank2: Maybe<Int> = .yes(80)
     
     var balance: Int {
-        let b1: Int = getBalanceBank1
-        let b2: Int = getBalanceBank2
+        let b1: Maybe<Int> = getBalanceBank1
+        let b2: Maybe<Int> = getBalanceBank2
         
         return b1 + b2
     }
