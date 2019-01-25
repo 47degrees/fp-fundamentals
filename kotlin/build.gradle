@@ -9,8 +9,8 @@ version '1.0-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
-    maven {     url 'http://oss.sonatype.org/content/repositories/snapshots' }
-    mavenCentral()
+    jcenter()
+    maven { url "https://oss.jfrog.org/artifactory/oss-snapshot-local/" }
 }
 
 dependencies {
@@ -19,24 +19,8 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
-    compile "io.arrow-kt:arrow-core-data:$arrow_version"
-    compile "io.arrow-kt:arrow-syntax:$arrow_version"
-    compile "io.arrow-kt:arrow-typeclasses:$arrow_version"
-    compile "io.arrow-kt:arrow-extras:$arrow_version"
-    compile "io.arrow-kt:arrow-core-extensions:$arrow_version"
-    compile "io.arrow-kt:arrow-extras-extensions:$arrow_version"
-    kapt    "io.arrow-kt:arrow-meta:$arrow_version"
-
-    compile "io.arrow-kt:arrow-mtl:$arrow_version" //optional
-    compile "io.arrow-kt:arrow-effects:$arrow_version" //optional
-    compile "io.arrow-kt:arrow-effects-extensions:$arrow_version" //optional
-    compile "io.arrow-kt:arrow-effects-kotlinx-coroutines:$arrow_version" //optional
-    compile "io.arrow-kt:arrow-effects-kotlinx-coroutines-extensions:$arrow_version" //optional
-    compile "io.arrow-kt:arrow-optics:$arrow_version" //optional
-    compile "io.arrow-kt:arrow-generic:$arrow_version" //optional
-    compile "io.arrow-kt:arrow-recursion:$arrow_version" //optional
-    compile "io.arrow-kt:arrow-extensions-recursion:$arrow_version" //optional
-    compile "io.arrow-kt:arrow-integration-retrofit-adapter:$arrow_version"
+    implementation "io.arrow-kt:arrow-core-data:$arrow_version"
+    implementation "io.arrow-kt:arrow-effects-extensions:$arrow_version"
 }
 
 compileKotlin {
