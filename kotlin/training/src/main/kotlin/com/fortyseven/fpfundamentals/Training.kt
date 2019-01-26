@@ -1,53 +1,45 @@
 package com.fortyseven.fpfundamentals
 
+import arrow.Kind
+import arrow.core.Either
+import arrow.core.Id
 import arrow.core.Option
-import arrow.core.Some
-import arrow.core.extensions.option.applicative.applicative
-import arrow.core.extensions.option.functor.functor
+import arrow.core.Try
+import arrow.core.extensions.`try`.monad.monad
+import arrow.core.extensions.either.monad.monad
+import arrow.core.extensions.id.monad.monad
 import arrow.core.extensions.option.monad.monad
-import arrow.core.extensions.option.semigroup.semigroup
-import arrow.core.extensions.semigroup
-import arrow.core.fix
+import arrow.data.ListK
+import arrow.data.extensions.listk.monad.monad
+import arrow.typeclasses.Monad
 
 data class Account(val id: String, val balance: Int)
 
 data class Statement(val isRich: Boolean, val accounts: Int)
 
-class Program {
+class Program<F>(private val MF: Monad<F>) {
 
-  private val moneyInPocket: Int = 20
-  private val bank1Credentials: Option<String> = Some("MyUser_Password")
+  private val moneyInPocket: Kind<F, Int> = MF.just(20)
+  private val bank1Credentials: Kind<F, String> = MF.just("MyUser_Password")
 
-  private fun getBalanceBank1(credentials: String): Option<Account> {
-    return Some(Account("a1", 100))
+  private fun getBalanceBank1(credentials: String): Kind<F, Account> =
+    MF.just(Account("a1", 100))
+
+  private fun balanceBank2(): Kind<F, Int> = MF.just(80)
+
+  val balance: Kind<F, Int> = MF.binding {
+    val credentials = bank1Credentials.bind()
+    val b1 = getBalanceBank1(credentials).map { it.balance }.bind()
+    val b2 = balanceBank2().bind()
+    val p = moneyInPocket.bind()
+    b1 + b2 + p
   }
-
-  private val balanceBank2: Option<Int> = Some(80)
-
-  private val b1 = Option.monad().run {
-    bank1Credentials.flatMap { credentials ->
-      Option.functor().run { getBalanceBank1(credentials).map { it.balance } }
-    }
-  }
-  private val b2 = balanceBank2
-  private val p: Option<Int> = Option.applicative().just(moneyInPocket)
-
-  val balance: Option<Int>
-    get() {
-      val combinator = Option.semigroup(Int.semigroup())
-      return combinator.run { b1.combine(b2).combine(p) }
-    }
-
-  val statement: Option<Statement>
-    get() = Option.applicative().run {
-      b1.map2(b2) { (x, y) ->
-        Statement(isRich = (x + y > 1000), accounts = 2)
-      }.fix()
-    }
 }
 
 fun main(args: Array<String>) {
-  val program = Program()
-  println(program.balance)
-  println(program.statement)
+  println(Program(Id.monad()).balance)
+  println(Program(Option.monad()).balance)
+  println(Program(Either.monad<String>()).balance)
+  println(Program(Try.monad()).balance)
+  println(Program(ListK.monad()).balance)
 }
