@@ -14,4 +14,9 @@ sealed class Maybe<out A> : MaybeOf<A> {
     is Absent -> ifAbsent()
     is Present<A> -> ifPresent(a)
   }
+
+  fun <B> map(f: (A) -> B): Maybe<B> = when (this) {
+    is Absent -> Absent
+    is Present<A> -> Present(f(a))
+  }
 }
