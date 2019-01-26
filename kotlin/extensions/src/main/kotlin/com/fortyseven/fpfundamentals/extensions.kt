@@ -36,3 +36,17 @@ interface MaybeTransformer : Transformer<ForMaybe> {
   override fun <A, B> map(fa: Kind<ForMaybe, A>, f: (A) -> B): Maybe<B> =
     fa.fix().map(f)
 }
+
+@extension
+interface MaybeTransformer2 : Transformer2<ForMaybe>, MaybeTransformer {
+  override fun <A, B> ap(fa: Kind<ForMaybe, A>, ff: Kind<ForMaybe, (A) -> B>): Kind<ForMaybe, B> =
+    ff.fix().fold(
+      { Maybe.Absent },
+      { f ->
+        fa.fix().fold(
+          { Maybe.Absent },
+          { a -> Maybe.Present(f(a)) }
+        )
+      }
+    )
+}
