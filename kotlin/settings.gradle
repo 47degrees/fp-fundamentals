@@ -44,4 +44,4 @@ pluginManagement {
     }
 }
 rootProject.name = 'com.fortyseven.fpfundamentals'
-include 'extensions', 'training', 'typeclasses', 'datatypes'
+include 'training'

@@ -1,12 +1,13 @@
 package com.fortyseven.fpfundamentals
 
-import com.fortyseve.fpfundamentals.Maybe
-import com.fortyseve.fpfundamentals.fix
-import com.fortyseven.fpfundamentals.maybe.combinator.combinator
-import com.fortyseven.fpfundamentals.maybe.flattener.flattener
-import com.fortyseven.fpfundamentals.maybe.lifter.lifter
-import com.fortyseven.fpfundamentals.maybe.transformer.transformer
-import com.fortyseven.fpfundamentals.maybe.transformer2.transformer2
+import arrow.core.Option
+import arrow.core.Some
+import arrow.core.extensions.option.applicative.applicative
+import arrow.core.extensions.option.functor.functor
+import arrow.core.extensions.option.monad.monad
+import arrow.core.extensions.option.semigroup.semigroup
+import arrow.core.extensions.semigroup
+import arrow.core.fix
 
 data class Account(val id: String, val balance: Int)
 
@@ -15,32 +16,34 @@ data class Statement(val isRich: Boolean, val accounts: Int)
 class Program {
 
   private val moneyInPocket: Int = 20
-  private val bank1Credentials: Maybe<String> = Maybe.Present("MyUser_Password")
+  private val bank1Credentials: Option<String> = Some("MyUser_Password")
 
-  private fun getBalanceBank1(credentials: String): Maybe<Account> {
-    return Maybe.Present(Account("a1", 100))
+  private fun getBalanceBank1(credentials: String): Option<Account> {
+    return Some(Account("a1", 100))
   }
 
-  private val balanceBank2: Maybe<Int> = Maybe.Present(80)
+  private val balanceBank2: Option<Int> = Some(80)
 
-  private val b1 = Maybe.flattener().flatMap(bank1Credentials) { credentials ->
-    Maybe.transformer().map(getBalanceBank1(credentials)) {
-      it.balance
+  private val b1 = Option.monad().run {
+    bank1Credentials.flatMap { credentials ->
+      Option.functor().run { getBalanceBank1(credentials).map { it.balance } }
     }
   }
   private val b2 = balanceBank2
-  private val p: Maybe<Int> = Maybe.lifter().just(moneyInPocket)
+  private val p: Option<Int> = Option.applicative().just(moneyInPocket)
 
-  val balance: Maybe<Int>
+  val balance: Option<Int>
     get() {
-      val combinator = Maybe.combinator(Int.combinator())
-      return combinator.combine(combinator.combine(b1, b2), p)
+      val combinator = Option.semigroup(Int.semigroup())
+      return combinator.run { b1.combine(b2).combine(p) }
     }
 
-  val statement: Maybe<Statement>
-    get() = Maybe.transformer2().map2(b1, b2) { (x, y) ->
-      Statement(isRich = (x + y > 1000), accounts = 2)
-    }.fix()
+  val statement: Option<Statement>
+    get() = Option.applicative().run {
+      b1.map2(b2) { (x, y) ->
+        Statement(isRich = (x + y > 1000), accounts = 2)
+      }.fix()
+    }
 }
 
 fun main(args: Array<String>) {
