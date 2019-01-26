@@ -23,3 +23,8 @@ interface Transformer2<F> : Transformer<F> {
   fun <A, B, Z> map2(fa: Kind<F, A>, fb: Kind<F, B>, f: (Tuple2<A, B>) -> Z): Kind<F, Z> =
     map(product(fa, fb), f)
 }
+
+interface Lifter<F> {
+
+  fun <A> just(a: A): Kind<F, A>
+}

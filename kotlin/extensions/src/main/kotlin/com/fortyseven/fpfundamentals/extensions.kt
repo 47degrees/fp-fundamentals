@@ -39,7 +39,7 @@ interface MaybeTransformer : Transformer<ForMaybe> {
 
 @extension
 interface MaybeTransformer2 : Transformer2<ForMaybe>, MaybeTransformer {
-  override fun <A, B> ap(fa: Kind<ForMaybe, A>, ff: Kind<ForMaybe, (A) -> B>): Kind<ForMaybe, B> =
+  override fun <A, B> ap(fa: Kind<ForMaybe, A>, ff: Kind<ForMaybe, (A) -> B>): Maybe<B> =
     ff.fix().fold(
       { Maybe.Absent },
       { f ->
@@ -49,4 +49,10 @@ interface MaybeTransformer2 : Transformer2<ForMaybe>, MaybeTransformer {
         )
       }
     )
+}
+
+@extension
+interface MaybeLifter : Lifter<ForMaybe> {
+
+  override fun <A> just(a: A): Maybe<A> = Maybe.Present(a)
 }
