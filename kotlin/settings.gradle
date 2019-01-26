@@ -9,7 +9,39 @@ pluginManagement {
         maven {
             url 'https://plugins.gradle.org/m2/'
         }
+
+        maven {
+            url 'http://oss.sonatype.org/content/repositories/snapshots'
+        }
+
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
+
+        maven {
+            url 'http://oss.sonatype.org/content/repositories/snapshots'
+        }
+
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
+
+        maven {
+            url 'http://oss.sonatype.org/content/repositories/snapshots'
+        }
+
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
+
+        maven {
+            url 'http://oss.sonatype.org/content/repositories/snapshots'
+        }
+
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
     }
 }
 rootProject.name = 'com.fortyseven.fpfundamentals'
-
+include 'extensions', 'training', 'typeclasses', 'datatypes'
