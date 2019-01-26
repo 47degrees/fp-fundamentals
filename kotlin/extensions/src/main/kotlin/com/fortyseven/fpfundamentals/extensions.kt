@@ -56,3 +56,10 @@ interface MaybeLifter : Lifter<ForMaybe> {
 
   override fun <A> just(a: A): Maybe<A> = Maybe.Present(a)
 }
+
+@extension
+interface MaybeFlattener : Flattener<ForMaybe> {
+
+  override fun <A, B> flatMap(fa: Kind<ForMaybe, A>, f: (A) -> Kind<ForMaybe, B>): Maybe<B> =
+    fa.fix().fold({ Maybe.Absent }, f).fix()
+}

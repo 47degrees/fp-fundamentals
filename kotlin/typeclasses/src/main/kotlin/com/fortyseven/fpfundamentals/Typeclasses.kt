@@ -28,3 +28,8 @@ interface Lifter<F> {
 
   fun <A> just(a: A): Kind<F, A>
 }
+
+interface Flattener<F> {
+
+  fun <A, B> flatMap(fa: Kind<F, A>, f: (A) -> Kind<F, B>): Kind<F, B>
+}
