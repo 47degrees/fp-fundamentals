@@ -1,5 +1,5 @@
 package training
 
-object Typeclases {
-  
-}
+object Typeclases:
+  trait Combinator[A]:
+    def combine(x: A, y: A): A
