@@ -4,14 +4,24 @@ As part of the some FP mentoring sesions we have developed a very simple project
 
 ## [Scala3](/scala)
 
-- [Step 0: Foundations]()
+- [Step 0: Foundations](https://github.com/47degrees/fp-fundamentals/pull/5/commits/f468ade5bfecaf04460f71f0e6acdef9ca9aae96)
+- [Step 1: Create data type Maybe](https://github.com/47degrees/fp-fundamentals/pull/5/commits/e5fdb6526e0d69100a04313ea3fc14a1d471b26a)
+- [Step 2: Create type class Combinator](https://github.com/47degrees/fp-fundamentals/pull/5/commits/30cd74b3027d7caa75de74eef779c63fd9462204)
+- [Step 3: Add syntax for Combinator](https://github.com/47degrees/fp-fundamentals/pull/5/commits/627df5dbf8a7d70abb36baf2ebd488ec2a86e1bb)
+- [Step 4: Create type class Transformer (with syntax)](https://github.com/47degrees/fp-fundamentals/pull/5/commits/98ade72620f2c594fae15adb5c7eabb4e4f7e548)
+- [Step 5: Create type class Transformer2](https://github.com/47degrees/fp-fundamentals/pull/5/commits/e372f849f821871192e88fc5d040d768e195aa0a)
+- [Step 6: Create type class Lifter](https://github.com/47degrees/fp-fundamentals/pull/5/commits/76fa52de035dd09ae663a76f31c3e3c86c619553)
+- [Step 7: Create type class Flattener](https://github.com/47degrees/fp-fundamentals/pull/5/commits/e061506c9489e91f32339de14b1ca325ae41a68d)
+- [Step 8: Use monadic structure](https://github.com/47degrees/fp-fundamentals/pull/5/commits/49f53dd4eff5202b881c9427a061455e12224b85)
+- [Step 9: Use Option](https://github.com/47degrees/fp-fundamentals/pull/5/commits/8f708653e5946c153712337c15bbd3166f6cc6ac)
+- [Step 10: Generic F-program](https://github.com/47degrees/fp-fundamentals/pull/5/commits/ac1856cb20f2b0a94e70e58cfece726d4556f712)
 
 ## [Scala](/scala)
 
 - [Step 0: Foundations](https://github.com/47degrees/fp-fundamentals/commit/a1eb8385ba2de21ef36b7a9449f3630d5edae321)
 - [Step 1: Create data type Maybe](https://github.com/47degrees/fp-fundamentals/commit/9dc4a6136935ca15c95918f22d4fcac2dbe60f72)
 - [Step 2: Create type class Combinator](https://github.com/47degrees/fp-fundamentals/commit/b81c78d415cc6a77a16f147bc63e79f3c7c23d0c)
-- [Step 3: Ass syntax for Combinator](https://github.com/47degrees/fp-fundamentals/commit/197631105a3cc7835ccef9ee08810f6a33fcf4e6)
+- [Step 3: Add syntax for Combinator](https://github.com/47degrees/fp-fundamentals/commit/197631105a3cc7835ccef9ee08810f6a33fcf4e6)
 - [Step 4: Create type class Transformer (with syntax)](https://github.com/47degrees/fp-fundamentals/commit/d01460ac58347db8a36b53b2586b5a53207fb224)
 - [Step 5: Create type class Transformer2](https://github.com/47degrees/fp-fundamentals/commit/61a04fb37a3e240a67f24ee3e8acbb27bc6640a4)
 - [Step 6: Create type class Lifter](https://github.com/47degrees/fp-fundamentals/commit/dbd48796eefde4cc34608e4bb75352d5886b8f25)
