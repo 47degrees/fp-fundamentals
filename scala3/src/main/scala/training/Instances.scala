@@ -3,7 +3,7 @@ package training
 import training.DataTypes.*
 import training.Typeclases.*
 
-object Instances {
+object Instances:
   given Combinator[Int] with
     override def combine(x: Int, y: Int): Int = x + y
 
@@ -31,4 +31,9 @@ object Instances {
   given Lifter[Maybe] with
     override def pure[A](a: A): Maybe[A] = Maybe(a)
 
-}
+  given Flattener[Maybe] with
+    override def flatMap[A, B](fa: Maybe[A], f: A => Maybe[B]): Maybe[B] = fa match
+      case Yes(a) => f(a)
+      case No     => No
+
+end Instances
