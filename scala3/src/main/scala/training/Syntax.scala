@@ -13,3 +13,6 @@ object Syntax:
 
   extension [A](self: Maybe[A])
     def map[B](f: A => B): Maybe[B] = summon[Transformer[Maybe]].map(self, f)
+
+  extension [A](self: A)
+    def pure[F[_]](using sv: Lifter[F]): F[A] = sv.pure(self)

@@ -13,3 +13,6 @@ object Typeclases:
       ap(fb, map(fa, (a: A) => (b: B) => (a, b)))
     def map2[A, B, Z](fa: F[A], fb: F[B], f: (A, B) => Z): F[Z] =
       map(product(fa, fb), f.tupled)
+
+  trait Lifter[F[_]]:
+    def pure[A](a: A): F[A]

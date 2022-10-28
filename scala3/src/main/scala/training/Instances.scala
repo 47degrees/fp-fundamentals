@@ -28,4 +28,7 @@ object Instances {
       case Yes(a) => Maybe(f(a))
       case No     => No
 
+  given Lifter[Maybe] with
+    override def pure[A](a: A): Maybe[A] = Maybe(a)
+
 }
