@@ -19,4 +19,13 @@ object Instances {
       case Yes(a) => Maybe(f(a))
       case No     => No
 
+  given Transformer2[Maybe] with
+    override def ap[A, B](fa: Maybe[A], ff: Maybe[A => B]): Maybe[B] =
+      (ff, fa) match
+        case (Yes(f), Yes(a)) => Maybe(f(a))
+        case (_, _)           => No
+    override def map[A, B](fa: Maybe[A], f: A => B): Maybe[B] = fa match
+      case Yes(a) => Maybe(f(a))
+      case No     => No
+
 }
