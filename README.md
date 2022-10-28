@@ -2,6 +2,10 @@
 
 As part of the some FP mentoring sesions we have developed a very simple project (in Scala, Kotlin and Swift) that basically shows how to express the behavior of your program using type classes: `Combinator`,  `Transformer`, `Lifter` and `Flattener`, which are basically a simpler version of `Semigroup`, `Functor`, `Applicative` and `Monad`.
 
+## [Scala3](/scala)
+
+- [Step 0: Foundations]()
+
 ## [Scala](/scala)
 
 - [Step 0: Foundations](https://github.com/47degrees/fp-fundamentals/commit/a1eb8385ba2de21ef36b7a9449f3630d5edae321)
