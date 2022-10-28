@@ -12,11 +12,14 @@ import training.Syntax.*
   def getBalanceBank1(credentials: String): Maybe[Account] = Yes(Account("a1", 100))
   def getBalanceBank2: Maybe[Int] = Yes(80)
   val moneyInPocket: Int = 20
-
-  val b1: Maybe[Int] = getBank1Credentials.flatMap(cred => getBalanceBank1(cred).map(_.balance))
-  val b2: Maybe[Int] = getBalanceBank2
-  val p: Maybe[Int] = moneyInPocket.pure
-  val balance: Maybe[Int] = b1 + b2 + p
+  
+  val balance =
+    for
+      c <- getBank1Credentials
+      b1 <- getBalanceBank1(c).map(_.balance)
+      b2 <- getBalanceBank2
+      p <- moneyInPocket.pure
+    yield b1 + b2 + p
 
   // EDGE OF THE WORLD
   println(balance)
