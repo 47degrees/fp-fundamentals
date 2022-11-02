@@ -14,7 +14,10 @@ object Syntax:
   extension [A](self: Maybe[A])
     def map[B](f: A => B): Maybe[B] = summon[Transformer[Maybe]].map(self, f)
 
-  extension [A](self: A) def pure[F[_]](using sv: Lifter[F]): F[A] = sv.pure(self)
+  extension [A](self: A)
+    def pure[F[_]]: Lifter[F] ?=> F[A] =
+      summon[Lifter[F]].pure(self)
 
-  extension [A](using ev: Flattener[Maybe])(self: Maybe[A])
-    def flatMap[B](f: A => Maybe[B]): Maybe[B] = summon[Flattener[Maybe]].flatMap(self, f)
+  extension [A](self: Maybe[A])
+    def flatMap[B](f: A => Maybe[B]): Flattener[Maybe] ?=> Maybe[B] =
+      summon[Flattener[Maybe]].flatMap(self, f)
