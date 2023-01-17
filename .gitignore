@@ -8,6 +8,10 @@ target/
 .idea/
 .DS_Store
 
+# LSP
+.metals/
+.vscode/
+
 # Swift & Xcode
 
 # Xcode
